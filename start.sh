@@ -51,21 +51,10 @@ sudo apt-get install -y filezilla
 sudo apt-get install -y xpad
 
 
-#install VS-code
-sudo snap install vscode --classic
-
-#install spotify
-
-sudo snap install spotify
-
-#install cheat
-
-sudo snap install cheat
-
 #gnome tweak tool
 
-sudo apt-get install gnome-tweak-tool
-sudo apt-get install chrome-gnome-shell
+sudo apt-get install gnome-tweak-tool -y
+sudo apt-get install chrome-gnome-shell -y
 
 
 #installing discord
@@ -76,4 +65,4 @@ sudo snap install discord
 
 sudo add-apt-repository ppa:boltgolt/howdy
 sudo apt update
-sudo apt install howdy
+sudo apt install howdy -y
