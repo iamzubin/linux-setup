@@ -1,0 +1,3 @@
+[submodule "redhat/setup"]
+	path = redhat/setup
+	url = git@gist.github.com:32308fe8442c9348be88fc688817c9a2.git
