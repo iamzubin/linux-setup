@@ -71,7 +71,7 @@ set ignorecase
 
 
 " Add line numbers
-set number
+set relativenumber
 
 " Set the status line to something nifty
 set stl=%f\ Line:%l/%L\ (%p%%)\ Col:%v\ Buf:#%n\ 0x%B
