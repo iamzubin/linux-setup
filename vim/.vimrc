@@ -5,6 +5,7 @@ set clipboard=unnamedplus " linux ctrl-c/v
 " Allows you to :e file automplete in subdirectories
 set path+=**
 set wildmenu
+set clipboard=unnamed
 
 " Execute line under cursor in bash
 nmap <F6> :exec '!'.getline('.')
@@ -23,14 +24,21 @@ endif
 filetype plugin indent on
 
 call plug#begin()
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+
 Plug 'othree/yajs'
 Plug 'mxw/vim-jsx'
 Plug 'hashivim/vim-terraform'
-Plug 'sonph/onehalf', {'rtp': 'vim/'}
-Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'davidhalter/jedi-vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'nvie/vim-flake8'
+Plug 'jnurmine/Zenburn'
+Plug 'altercation/vim-colors-solarized'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-fugitive'
+Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
 call plug#end()
 
 set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -78,3 +86,35 @@ set stl=%f\ Line:%l/%L\ (%p%%)\ Col:%v\ Buf:#%n\ 0x%B
 
 " always show a status line
 set laststatus=2
+
+" Jedi Config
+let g:jedi#goto_command = ",d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#goto_stubs_command = "<leader>s"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+let g:jedi#completions_enabled = 1
+
+
+" syntax highlight
+let python_highlight_all=1
+syntax on
+
+" theme
+if has('gui_running')
+  set background=dark
+  colorscheme solarized
+else
+  colorscheme zenburn
+endif
+hi Normal guibg=NONE ctermbg=NONE
+
+" pylint settings
+let g:pymode_lint_ignore = "E501,W"
+
+
+" NERD tree
+map ,t :NERDTreeToggle<CR>
