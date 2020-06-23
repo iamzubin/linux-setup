@@ -1,0 +1,2 @@
+#!/bin/sh
+ctags_with_dep.sh  $(find . -iregex '.*\.\(c\|cpp\|c++\|cc\)$')

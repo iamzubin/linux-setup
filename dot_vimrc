@@ -1,220 +1,122 @@
-set nocompatible      " be iMproved, required
+" -----------------------------------imports--------------------------------
 
-set encoding=utf-8
+call plug#begin('~/.vim/plugged')
 
-set clipboard=unnamedplus " linux ctrl-c/v
+Plug 'preservim/nerdtree'
 
-let mapleader = ',' 
+Plug 't9md/vim-choosewin'
 
-" Allows you to :e file automplete in subdirectories
+Plug 'scrooloose/syntastic'
 
-set path+=**
+Plug 'vim-airline/vim-airline'
 
-set wildmenu
-
-set clipboard=unnamed
-
-
-
-" Execute line under cursor in bash
-
-nmap <F6> :exec '!'.getline('.')
-
-
-
-" For some reason, the vertical bar cursor stopped working by default in
-
-" insert mode, and I found this which also apparently applies some fixes to
-
-" tmux, which I use
-
-if exists('$TMUX')
-
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-
-else
-
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-endif
-
-
-
-filetype plugin indent on
-
-
-
-call plug#begin()
-
-
-
-
-
-Plug 'hashivim/vim-terraform'
-
-Plug 'airblade/vim-gitgutter'
-
-Plug 'davidhalter/jedi-vim'
-
-Plug 'vim-syntastic/syntastic'
-
-Plug 'nvie/vim-flake8'
-
-Plug 'altercation/vim-colors-solarized'
-
-Plug 'scrooloose/nerdtree'
-
-Plug 'tpope/vim-fugitive'
-
-Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
+Plug 'rafi/awesome-vim-colorschemes'
 
 
 call plug#end()
 
+" set clipboard
+set clipboard^=unnamedplus,unnamed
+
+" set cursor line
+set cursorline
 
 
-
-
-
-" vodoo for true color, along with .tmux.conf settings
-
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
-
-
-let g:prettier#autoformat = 0
-
-au BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml Prettier
-
-au BufRead,BufNewFile *.js setlocal syntax=javascript.jsx
-
-au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml.ansible
-
-
-
-" automatically wrap in markdown
-
-au BufRead,BufNewFile *.md setlocal textwidth=80
-
-
-
-" new version of vim is dumb and wont delete over line breaks
-
-set backspace=2
-
-
-
-" Enable syntax highlight
-
-syntax enable
-
-
-
+" set UTF-8 encoding
+" set enc=utf-8
+" set fenc=utf-8
+" set termencoding=utf-8
+" disable vi compatibility (emulation of old bugs)
+set nocompatible
+" use indentation of previous line
 set autoindent
-
+" use intelligent indentation for C
 set smartindent
-
-set ttyfast
-
-
-
-" Spaces to tabs
-
-set expandtab
-
-set tabstop=2
-
-set shiftwidth=2
-
-
-
-" Turn on search highlighting
-
-set hlsearch
-
-
-
-" Deal with upper/lower better
-
-set smartcase
-
-set ignorecase
-
-
-
-
-
-" Add line numbers
-
-set relativenumber
-
-
-
-" Set the status line to something nifty
-
-set stl=%f\ Line:%l/%L\ (%p%%)\ Col:%v\ Buf:#%n\ 0x%B
-
-
-
-" always show a status line
-
-set laststatus=2
-
-
-
-" Jedi Config
-
-let g:jedi#goto_command = ",d"
-
-let g:jedi#goto_assignments_command = "<leader>g"
-
-let g:jedi#goto_stubs_command = "<leader>s"
-
-let g:jedi#goto_definitions_command = ""
-
-let g:jedi#documentation_command = "K"
-
-let g:jedi#usages_command = "<leader>n"
-
-let g:jedi#completions_command = "<C-Space>"
-
-let g:jedi#rename_command = "<leader>r"
-
-let g:jedi#completions_enabled = 1
-
-
-
-
-
-" syntax highlight
-
-let python_highlight_all=1
-
+" configure tabwidth 
+set tabstop=4        " tab width is 4 spaces
+set shiftwidth=4     " indent also with 4 spaces
+" set expandtab        " expand tabs to spaces
+" turn syntax highlighting on
 syntax on
+" turn line numbers on
+set number
+" highlight matching braces
+set showmatch
+" intelligent comments
+set comments=sl:/*,mb:\ *,elx:\ */
 
 
+" Install OmniCppComplete like described on http://vim.wikia.com/wiki/C++_code_completion
+" This offers intelligent C++ completion when typing ‘.’ ‘->’ or <C-o>
+" Load standard tag files
 
+" configure tags - add additional tags here or comment out not-used ones
+set tags+=~/.vim/tags/cpp
+set tags+=~/.vim/tags/libevdev
+set tags+=~/.vim/tags/libinput
 
-hi Normal guibg=NONE ctermbg=NONE
+" build tags of your own project with Ctrl-F12
 
+"""
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+set omnifunc=syntaxcomplete#Complete
 
+" automatically open and close the popup menu / preview window
+" au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+function! OpenCompletion()
+    if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
+        call feedkeys("\<C-x>\<C-o>")
+    endif
+endfunction
 
-" pylint settings
+autocmd InsertCharPre * call OpenCompletion()
 
-let g:pymode_lint_ignore = "E501,W"
+set completeopt=menuone,menu,longest,preview
 
+" Install DoxygenToolkit from http://www.vim.org/scripts/script.php?script_id=987
+" let g:DoxygenToolkit_authorName="Zubin Choudhary <zchoudhary.10@gmail.com>"
 
+" Mouse mode
+set ttymouse=xterm2
+set mouse=a
 
+"  to clear search
+nnoremap <silent> // :noh<CR>
 
+" Enhanced keyboard mappings
+"
+" in normal mode F2 will save the file
+nmap <F2> :w<CR>
+" in insert mode F2 will exit insert, save, enters insert again
+imap <F2> <ESC>:w<CR>i
+" switch between header/source with F4
+map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+" recreate tags file with F5
+" map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+" custom script for c and c++ tags to run with deps
+map <F5> :!ctags_with_dep.sh  $(find . -iregex '.*\.\(c\|cpp\|c++\|cc\)$') <CR>
+" map <F5> :!ctags -R –c++-kinds=+p –fields=+iaS –extra=+q .<CR>
+" create doxygen comment
+" map <F6> :Dox<CR>
+" build using makeprg with <F7>
+map <F7> :make<CR>
+map <F12> <C-]>
 
-" NERD tree
+" Binding for choosewin
+nmap  -  <Plug>(choosewin)
+let g:choosewin_overlay_enable = 1
 
+" nerdtree config
 map ,t :NERDTreeToggle<CR>
 
+colorscheme afterglow
+
+hi Normal guibg=NONE ctermbg=NONE
