@@ -68,7 +68,6 @@ let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
 let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
 let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 set omnifunc=syntaxcomplete#Complete
-
 " automatically open and close the popup menu / preview window
 " au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 function! OpenCompletion()
@@ -79,7 +78,7 @@ endfunction
 
 autocmd InsertCharPre * call OpenCompletion()
 
-set completeopt=menuone,menu,longest,preview
+set completeopt=menuone,menu,longest,preview,noinsert
 
 " Install DoxygenToolkit from http://www.vim.org/scripts/script.php?script_id=987
 " let g:DoxygenToolkit_authorName="Zubin Choudhary <zchoudhary.10@gmail.com>"
@@ -102,7 +101,6 @@ map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 " recreate tags file with F5
 " map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 " custom script for c and c++ tags to run with deps
-map <F5> :!ctags_with_dep.sh  $(find . -iregex '.*\.\(c\|cpp\|c++\|cc\)$') <CR>
 " map <F5> :!ctags -R –c++-kinds=+p –fields=+iaS –extra=+q .<CR>
 " create doxygen comment
 " map <F6> :Dox<CR>
@@ -114,9 +112,38 @@ map <F12> <C-]>
 nmap  -  <Plug>(choosewin)
 let g:choosewin_overlay_enable = 1
 
+" Split window
+nmap ss :split<Return><C-w>w
+nmap sv :vsplit<Return><C-w>w
+
+
+" Move window
+map sh <c-w>h
+map sk <c-w>k
+map sj <c-w>j
+map sl <c-w>l
+
+map sH <c-w>H
+map sK <c-w>K
+map sJ <c-w>J
+map sL <c-w>L
+
+
+map sq <c-w>q
+" Switch tab
+nmap <S-Tab> :tabprev<Return>
+nmap <Tab> :tabnext<Return>
+
+nmap tt :tabedit<Return>:NERDTreeCWD<Return>
 " nerdtree config
 map ,t :NERDTreeToggle<CR>
 
 colorscheme afterglow
-
+set t_Co=256
 hi Normal guibg=NONE ctermbg=NONE
+
+set list
+set listchars=tab:►·
+set lcs+=space:·
+set lcs+=eol:↩
+
