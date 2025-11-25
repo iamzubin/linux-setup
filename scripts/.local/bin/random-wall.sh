@@ -1,10 +1,17 @@
 #!/bin/zsh
 
 WALLPAPER_DIR="$HOME/Pictures/"
-CURRENT_WALL=$(hyprctl hyprpaper listloaded)
+wallpapers=("${(@f)$(ls -1 "$WALLPAPER_DIR" | sort)}")
 
-# Get a random wallpaper that is not the current one
-WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+# If directory is empty, just exit
+[[ ${#wallpapers} -eq 0 ]] && exit 1
 
-# Apply the selected wallpaper
-wallust.sh "$WALLPAPER"
+index_file="$HOME/.cache/wallpaper_index"
+[[ -f $index_file ]] || echo 0 > $index_file
+
+current_index=$(cat $index_file)
+next_index=$(( (current_index + 1) % ${#wallpapers} ))
+echo $next_index > $index_file
+
+next_wall="$WALLPAPER_DIR/${wallpapers[$next_index]}"
+wallust.sh "$next_wall"
